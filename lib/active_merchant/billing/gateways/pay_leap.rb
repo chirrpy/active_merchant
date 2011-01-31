@@ -132,19 +132,9 @@ module ActiveMerchant #:nodoc:
         response = {}
         xml = REXML::Document.new(body)
         if(!xml.root.nil?)
-            puts "##### Got response:"
-            puts "##### XML:"
-            puts body
-            puts "##### end XML"
-            xml.root.elements.each do |node|
-              response[node.name.to_sym] = node.text
-              puts "\t#{node.name}: #{node.text}"
-            end
-            puts "##### end response"
-        else
-            puts "##### Error: Empty response. Body:"
-            puts body
-            puts "##### end body"
+          xml.root.elements.each do |node|
+            response[node.name.to_sym] = node.text
+          end
         end
         return response
         # Response keys:
@@ -181,10 +171,6 @@ module ActiveMerchant #:nodoc:
         end
 
         url = (test?)? TEST_URL : LIVE_URL
-        puts "Using URL: #{url}"
-        puts "Start of POST data:"
-        puts post_data(action, parameters)
-        puts "End of POST data:"
         data = ssl_post(url, post_data(action, parameters))
         response = parse(data)
         message = message_from(response)
