@@ -8,8 +8,8 @@ require "rexml/document"
 module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     class PayLeapGateway < Gateway
-      TEST_URL = 'https://uat.payleap.com/TransactServices.svc'
-      LIVE_URL = 'https://secure1.payleap.com/TransactServices.svc'
+      TEST_URL = 'https://uat.payleap.com/TransactServices.svc/ProcessCreditCard'
+      LIVE_URL = 'https://secure1.payleap.com/TransactServices.svc/ProcessCreditCard'
 
       # The countries the gateway supports merchants from as 2 digit ISO country codes
       self.supported_countries = ['US']
