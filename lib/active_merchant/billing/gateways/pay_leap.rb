@@ -62,15 +62,6 @@ module ActiveMerchant #:nodoc:
         commit('Sale', money, post)
       end
 
-      def capture(money, auth, options = {})
-        post = {:AuthCode => auth[:AuthCode], :PNRef => auth[:PNRef], :CardNum => auth[:CardNum]}
-        # Contrary to the documentation, PNRef and the last 4 digits of the card
-        # number must be included, so auth is a hash containing these.
-        # Also, PayLeap is evidently set up in such a way that Force is used for what
-        # Capture is generally intended for, performing a ForceCapture in this context.
-        commit('Force', money, post)
-      end
-
       def void(auth, options = {})
         post = {:AuthCode => auth[:AuthCode], :PNRef => auth[:PNRef]}
         commit('Void', nil, post)
