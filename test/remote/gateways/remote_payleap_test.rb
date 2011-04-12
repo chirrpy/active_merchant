@@ -50,7 +50,19 @@ class RemotePayLeapTest < Test::Unit::TestCase
   def test_unsuccessful_purchase
     assert response = @gateway.purchase(@amount, @declined_card, @options)
     assert_failure response
-#    assert_equal 'REPLACE WITH FAILED PURCHASE MESSAGE', response.message
+    # assert_equal 'REPLACE WITH FAILED PURCHASE MESSAGE', response.message
+  end
+
+  def test_custom_login_and_password
+    gateway = PayLeapGateway.new(
+                :login => '',
+                :password => '',
+                :test => true
+              )
+
+    these_opts = @options.merge({:login => 'chirrpy-test_API', :password => 'Tj53PR71WophtU5V', :test => true})
+    assert response = gateway.purchase(@amount, @credit_card, these_opts)
+    assert_success response
   end
 
   def test_invalid_login

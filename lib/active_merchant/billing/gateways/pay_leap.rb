@@ -53,7 +53,7 @@ module ActiveMerchant #:nodoc:
       end
 
       def purchase(money, creditcard, options = {})# TODO Sale
-        post = {}
+        post = {:login => options.delete(:login), :password => options.delete(:password)}
         add_invoice(post, options)
         add_creditcard(post, creditcard)
         add_address(post, creditcard, options)
@@ -180,8 +180,8 @@ module ActiveMerchant #:nodoc:
 
       def post_data(action, parameters = {})
         post = {} # evidently these fields are not optional, only the values are
-        post[:UserName] = @options[:login]
-        post[:Password] = @options[:password]
+        post[:UserName] = parameters.delete(:login) || @options[:login]
+        post[:Password] = parameters.delete(:password) || @options[:password]
         post[:TransType] = ""
         post[:CardNum] = ""
         post[:ExpDate] = ""
