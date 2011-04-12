@@ -19,7 +19,7 @@ class RemotePayLeapTest < Test::Unit::TestCase
         :number => "374255312721002",
         :verification_value => "123",
         :month => "10",
-        :year => "2009",
+        :year => "2012",
         :first_name => "John",
         :last_name => "Doe"
     )
@@ -44,7 +44,7 @@ class RemotePayLeapTest < Test::Unit::TestCase
   def test_successful_purchase
     assert response = @gateway.purchase(@amount, @credit_card, @options)
     assert_success response
-    assert_equal 'Approved', response.message
+    assert_equal 'APPROVAL', response.message
   end
 
   def test_unsuccessful_purchase
