@@ -84,7 +84,7 @@ module ActiveMerchant #:nodoc:
      private
       # return credit card expiration date in MMYY format
       def expdate(creditcard)
-        month = sprintf("%.2i", creditcard.month)
+        month = sprintf("%.2i", creditcard.month.to_i)
         year  = sprintf("%.4i", creditcard.year)
         "#{month}#{year[2, 2]}"
       end
