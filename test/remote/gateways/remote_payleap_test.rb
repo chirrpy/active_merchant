@@ -53,6 +53,20 @@ class RemotePayLeapTest < Test::Unit::TestCase
     # assert_equal 'REPLACE WITH FAILED PURCHASE MESSAGE', response.message
   end
 
+  def test_handle_potential_octal_values
+    credit_card = ActiveMerchant::Billing::CreditCard.new(
+        :type => "american_express",
+        :number => "374255312721002",
+        :verification_value => "123",
+        :month => "08",
+        :year => "2012",
+        :first_name => "John",
+        :last_name => "Doe"
+    )
+    assert response = @gateway.purchase(@amount, credit_card, @options)
+    assert_success response
+  end
+
   def test_custom_login_and_password
     gateway = PayLeapGateway.new(
                 :login => '',
