@@ -95,7 +95,7 @@ module ActiveMerchant #:nodoc:
       end
 
       def add_address(post, creditcard, options)
-      	address = options[:billing_address] || options[:address]
+        address = options[:billing_address] || options[:address]
         if(address)
           post[:Street] = "#{address[:address1]} #{address[:address2]} #{address[:city]}, #{address[:state]}"
           post[:Zip]    = address[:zip].to_s
