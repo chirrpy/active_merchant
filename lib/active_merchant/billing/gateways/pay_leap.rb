@@ -97,7 +97,12 @@ module ActiveMerchant #:nodoc:
       def add_address(post, creditcard, options)
         address = options[:billing_address] || options[:address]
         if(address)
-          post[:Street] = "#{address[:address1]} #{address[:address2]} #{address[:city]}, #{address[:state]}"
+          post[:ExtData] ||= ""
+          xml = Builder::XmlMarkup.new
+          xml.City address[:city]
+          xml.BillToState address[:state]
+          post[:ExtData] += xml
+          post[:Street] = address[:address1]
           post[:Zip]    = address[:zip].to_s
         end # else error?
         # TODO: Add address to ExtData as well?
