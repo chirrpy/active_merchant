@@ -1,6 +1,12 @@
 require 'test_helper'
 
 class ResponseTest < Test::Unit::TestCase
+  def test_response_invoice_number
+    response = Response.new(true, 'message', :invoice_number => 'abc')
+
+    assert_equal 'abc', response.invoice_number
+  end
+
   def test_response_amount
     response = Response.new(true, 'message', :amount => 100)
 
