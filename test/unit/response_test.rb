@@ -1,6 +1,18 @@
 require 'test_helper'
 
 class ResponseTest < Test::Unit::TestCase
+  def test_response_amount
+    response = Response.new(true, 'message', :amount => 100)
+
+    assert_equal 100, response.amount
+  end
+
+  def test_response_amount_when_not_specified
+    response = Response.new(true, 'message', :param => 'value')
+
+    assert_equal nil, response.amount
+  end
+
   def test_raw_response
     response = Response.new(true, 'message', { :param => 'value' }, :raw_response => 'foo')
 
