@@ -306,6 +306,7 @@ module ActiveMerchant #:nodoc:
         test_mode = test? || message =~ /TESTMODE/
 
         Response.new(success?(response), message, response,
+          :raw_response => data,
           :test => test_mode,
           :authorization => response[:transaction_id],
           :fraud_review => fraud_review?(response),
