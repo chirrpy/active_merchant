@@ -1,6 +1,12 @@
 require 'test_helper'
 
 class ResponseTest < Test::Unit::TestCase
+  def test_raw_response
+    response = Response.new(true, 'message', { :param => 'value' }, :raw_response => 'foo')
+
+    assert_equal 'foo', response.raw_response
+  end
+
   def test_response_success
     assert Response.new(true, 'message', :param => 'value').success?
     assert !Response.new(false, 'message', :param => 'value').success?
