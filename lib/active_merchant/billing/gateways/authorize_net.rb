@@ -38,6 +38,7 @@ module ActiveMerchant #:nodoc:
 
       APPROVED, DECLINED, ERROR, FRAUD_REVIEW = 1, 2, 3, 4
 
+      AMOUNT = 9
       RESPONSE_CODE, RESPONSE_REASON_CODE, RESPONSE_REASON_TEXT = 0, 2, 3
       AVS_RESULT_CODE, TRANSACTION_ID, CARD_CODE_RESPONSE_CODE  = 5, 6, 38
 
@@ -326,6 +327,7 @@ module ActiveMerchant #:nodoc:
         fields = split(body)
 
         results = {
+          :amount => fields[AMOUNT].to_i,
           :response_code => fields[RESPONSE_CODE].to_i,
           :response_reason_code => fields[RESPONSE_REASON_CODE],
           :response_reason_text => fields[RESPONSE_REASON_TEXT],
