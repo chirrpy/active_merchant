@@ -21,6 +21,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_instance_of Response, response
     assert_success response
     assert_equal '508141794', response.authorization
+    assert_equal successful_authorization_response, response.raw_response
   end
 
   def test_successful_purchase
@@ -30,6 +31,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_instance_of Response, response
     assert_success response
     assert_equal '508141795', response.authorization
+    assert_equal successful_purchase_response, response.raw_response
   end
 
   def test_failed_authorization
@@ -39,6 +41,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_instance_of Response, response
     assert_failure response
     assert_equal '508141794', response.authorization
+    assert_equal failed_authorization_response, response.raw_response
   end
 
   def test_successful_void
@@ -48,6 +51,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_instance_of Response, response
     assert_success response
     assert_equal '508141796', response.authorization
+    assert_equal successful_void_response, response.raw_response
   end
 
   def test_successful_reverse
@@ -58,6 +62,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_instance_of Response, response
     assert_success response
     assert_equal '508141797', response.authorization
+    assert_equal successful_refund_response, response.raw_response
   end
 
   def test_add_address_outsite_north_america
@@ -80,7 +85,6 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal 'CO', result[:state]
     assert_equal '164 Waverley Street', result[:address]
     assert_equal 'US', result[:country]
-
   end
 
   def test_add_invoice
@@ -153,6 +157,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert response = @gateway.refund(@amount, '123456789', :card_number => @credit_card.number)
     assert_success response
     assert_equal 'This transaction has been approved', response.message
+    assert_equal successful_purchase_response, response.raw_response
   end
 
   def test_refund_passing_extra_info
@@ -164,6 +169,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
       assert_match(/x_zip=12345/, data)
     end.respond_with(successful_purchase_response)
     assert_success response
+    assert_equal successful_purchase_response, response.raw_response
   end
 
   def test_failed_refund
@@ -172,6 +178,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert response = @gateway.refund(@amount, '123456789', :card_number => @credit_card.number)
     assert_failure response
     assert_equal 'The referenced transaction does not meet the criteria for issuing a credit', response.message
+    assert_equal failed_refund_response, response.raw_response
   end
 
   def test_deprecated_credit
@@ -180,6 +187,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
       assert response = @gateway.credit(@amount, '123456789', :card_number => @credit_card.number)
       assert_success response
       assert_equal 'This transaction has been approved', response.message
+      assert_equal successful_purchase_response, response.raw_response
     end
   end
 
@@ -204,6 +212,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_failure response
     assert response.fraud_review?
     assert_equal "Thank you! For security reasons your order is currently being reviewed", response.message
+    assert_equal fraud_review_response, response.raw_response
   end
 
   def test_avs_result
@@ -211,6 +220,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
 
     response = @gateway.purchase(@amount, @credit_card)
     assert_equal 'X', response.avs_result['code']
+    assert_equal fraud_review_response, response.raw_response
   end
 
   def test_cvv_result
@@ -218,6 +228,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
 
     response = @gateway.purchase(@amount, @credit_card)
     assert_equal 'M', response.cvv_result['code']
+    assert_equal fraud_review_response, response.raw_response
   end
 
   def test_message_from
