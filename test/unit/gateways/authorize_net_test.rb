@@ -23,6 +23,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal '508141794', response.authorization
     assert_equal 1, response.amount
     assert_equal successful_authorization_response, response.raw_response
+    assert_equal '5b3fe66005f3da0ebe51', response.invoice_number
   end
 
   def test_successful_purchase
@@ -34,6 +35,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal '508141795', response.authorization
     assert_equal 1, response.amount
     assert_equal successful_purchase_response, response.raw_response
+    assert_equal '32968c18334f16525227', response.invoice_number
   end
 
   def test_failed_authorization
@@ -45,6 +47,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal '508141794', response.authorization
     assert_equal 1, response.amount
     assert_equal failed_authorization_response, response.raw_response
+    assert_equal '5b3fe66005f3da0ebe51', response.invoice_number
   end
 
   def test_successful_void
@@ -56,6 +59,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal '508141796', response.authorization
     assert_equal 0, response.amount
     assert_equal successful_void_response, response.raw_response
+    assert_equal 'abc', response.invoice_number
   end
 
   def test_successful_reverse
@@ -68,6 +72,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal '508141797', response.authorization
     assert_equal 0, response.amount
     assert_equal successful_refund_response, response.raw_response
+    assert_equal 'abc', response.invoice_number
   end
 
   def test_add_address_outsite_north_america
@@ -166,6 +171,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal 'This transaction has been approved', response.message
     assert_equal 1, response.amount
     assert_equal successful_purchase_response, response.raw_response
+    assert_equal '32968c18334f16525227', response.invoice_number
   end
 
   def test_refund_passing_extra_info
@@ -179,6 +185,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_success response
     assert_equal 1, response.amount
     assert_equal successful_purchase_response, response.raw_response
+    assert_equal '32968c18334f16525227', response.invoice_number
   end
 
   def test_failed_refund
@@ -189,6 +196,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal 'The referenced transaction does not meet the criteria for issuing a credit', response.message
     assert_equal 1, response.amount
     assert_equal failed_refund_response, response.raw_response
+    assert_equal 'abc', response.invoice_number
   end
 
   def test_deprecated_credit
@@ -199,6 +207,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
       assert_equal 'This transaction has been approved', response.message
       assert_equal 1, response.amount
       assert_equal successful_purchase_response, response.raw_response
+      assert_equal '32968c18334f16525227', response.invoice_number
     end
   end
 
@@ -225,6 +234,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal "Thank you! For security reasons your order is currently being reviewed", response.message
     assert_equal 1, response.amount
     assert_equal fraud_review_response, response.raw_response
+    assert_equal 'abc', response.invoice_number
   end
 
   def test_avs_result
@@ -234,6 +244,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal 'X', response.avs_result['code']
     assert_equal 1, response.amount
     assert_equal fraud_review_response, response.raw_response
+    assert_equal 'abc', response.invoice_number
   end
 
   def test_cvv_result
@@ -243,6 +254,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
     assert_equal 'M', response.cvv_result['code']
     assert_equal 1, response.amount
     assert_equal fraud_review_response, response.raw_response
+    assert_equal 'abc', response.invoice_number
   end
 
   def test_message_from
@@ -343,7 +355,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
   end
 
   def failed_refund_response
-    '$3$,$2$,$54$,$The referenced transaction does not meet the criteria for issuing a credit.$,$$,$P$,$0$,$$,$$,$1.00$,$CC$,$credit$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$39265D8BA0CDD4F045B5F4129B2AAA01$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$'
+    '$3$,$2$,$54$,$The referenced transaction does not meet the criteria for issuing a credit.$,$$,$P$,$0$,$abc$,$$,$1.00$,$CC$,$credit$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$39265D8BA0CDD4F045B5F4129B2AAA01$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$'
   end
 
   def successful_authorization_response
@@ -363,7 +375,7 @@ class AuthorizeNetTest < Test::Unit::TestCase
   end
 
   def successful_void_response
-    '$1$,$1$,$1$,$This transaction has been approved.$,$xxx$,$P$,$508141796$,$$,$$,$0.00$,$CC$,$void$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$9F92C24C21E956E195A61B8F74CC8F62$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$XXXX1111$,$Visa$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$'
+    '$1$,$1$,$1$,$This transaction has been approved.$,$xxx$,$P$,$508141796$,$abc$,$$,$0.00$,$CC$,$void$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$9F92C24C21E956E195A61B8F74CC8F62$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$XXXX1111$,$Visa$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$'
   end
 
   def failed_void_response
@@ -371,11 +383,11 @@ class AuthorizeNetTest < Test::Unit::TestCase
   end
 
   def successful_refund_response
-    '$1$,$1$,$1$,$This transaction has been approved.$,$$,$P$,$508141797$,$$,$$,$0.01$,$CC$,$credit$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$BFC43CB4A170D55D279619C740FA28D1$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$XXXX1111$,$Visa$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$'
+    '$1$,$1$,$1$,$This transaction has been approved.$,$$,$P$,$508141797$,$abc$,$$,$0.01$,$CC$,$credit$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$BFC43CB4A170D55D279619C740FA28D1$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$XXXX1111$,$Visa$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$'
   end
 
   def fraud_review_response
-    "$4$,$$,$253$,$Thank you! For security reasons your order is currently being reviewed.$,$$,$X$,$0$,$$,$$,$1.00$,$$,$auth_capture$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$207BCBBF78E85CF174C87AE286B472D2$,$M$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$"
+    "$4$,$$,$253$,$Thank you! For security reasons your order is currently being reviewed.$,$$,$X$,$0$,$abc$,$$,$1.00$,$$,$auth_capture$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$207BCBBF78E85CF174C87AE286B472D2$,$M$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$,$$"
   end
 
   def successful_recurring_response
